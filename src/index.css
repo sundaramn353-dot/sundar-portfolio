@@ -85,6 +85,8 @@ section { padding: 100px 0; }
   background: linear-gradient(135deg, rgba(0,212,255,0.03), transparent);
   opacity: 0;
   transition: opacity 0.3s;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .card:hover { border-color: var(--border-hover); transform: translateY(-4px); box-shadow: var(--glow-cyan); }

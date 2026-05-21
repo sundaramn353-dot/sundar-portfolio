@@ -1,10 +1,10 @@
 export const personalInfo = {
   name: "Sundaram N",
-  title: "ROS 2 Robotics Engineer",
-  roles: ["ROS 2 Developer", "Autonomous Systems Engineer", "Community Manager — KKR Robotics", "Embedded Systems Developer"],
+  title: "ROS 2 Developer",
+  roles: ["ROS 2 Developer", "Autonomous Systems Engineer", "Community Manager — KKR Robotics",],
   email: "sundaramn353@gmail.com",
   phone: "+91 7339257336",
-  location: "Coimbatore, Tamil Nadu, India",
+  location: "Chennai, Tamil Nadu, India",
   linkedin: "https://www.linkedin.com/in/sundaram-n",
   github: "https://github.com/sundaramn353-dot",
   rosWiki: "https://github.com/sundaramn353-dot/KKR-Robotics-Community/wiki",
@@ -107,7 +107,10 @@ export const projects = [
     category: "Robotics",
     color: "#00d4ff",
     icon: "🤖",
-    github: "https://github.com/sundaramn353-dot",
+    github: "https://github.com/sundaramn353-dot/Scrub_Bot",
+    media: [
+      { type: "video", src: "media/scrubbot-demo.webm", label: "ScrubBot Demo" },
+    ],
   },
   {
     id: 2,
@@ -125,7 +128,48 @@ export const projects = [
     category: "Robotics",
     color: "#7c3aed",
     icon: "🔄",
-    github: "https://github.com/sundaramn353-dot",
+    github: "https://github.com/sundaramn353-dot/AMR-Cleaning-Robot",
+    media: [
+      { type: "video", src: "media/vacuum-robot-demo.mp4", label: "Navigation Demo" },
+    ],
+  },
+  {
+    id: 3,
+    title: "Automated Metal Detector",
+    subtitle: "Real-Time Alert System with Embedded Sensors",
+    description: "An automated metal detection system featuring real-time buzzer and LED alerts, with proximity-based sensitivity calibration. Built with embedded microcontrollers for reliable field detection of metallic objects.",
+    tech: ["Arduino", "Inductive Sensor", "Buzzer", "LED", "Embedded C", "PCB Design"],
+    highlights: [
+      "Real-time metal detection with instant alerts",
+      "Buzzer + LED dual-alert notification system",
+      "Adjustable sensitivity via proximity calibration",
+      "Low-power embedded microcontroller design",
+      "Portable and field-deployable hardware unit",
+    ],
+    category: "Embedded",
+    color: "#f59e0b",
+    icon: "🔍",
+  },
+  {
+    id: 4,
+    title: "Rocker-Bogie Surveillance Robot",
+    subtitle: "Hazardous Object Handling & Terrain Traversal",
+    description: "A rocker-bogie chassis-based surveillance robot designed for hazardous object detection and handling in uneven terrain. Features a robotic arm for object manipulation and camera-based remote surveillance capabilities.",
+    tech: ["Arduino", "Rocker-Bogie", "Servo Motors", "Camera Module", "RF Control", "Robotic Arm"],
+    highlights: [
+      "Rocker-bogie suspension for rough terrain traversal",
+      "Robotic arm for hazardous object handling",
+      "Live camera feed for remote surveillance",
+      "RF-based wireless control system",
+      "Designed for search & rescue operations",
+    ],
+    category: "Embedded",
+    color: "#10b981",
+    icon: "🛡️",
+    media: [
+      { type: "image", src: "media/rocker-bogie-1.jpeg", label: "Robot Overview" },
+      { type: "image", src: "media/rocker-bogie-2.jpeg", label: "Terrain Test" },
+    ],
   },
 ];
 
@@ -134,8 +178,8 @@ export const experience = [
     id: 1,
     role: "ROS 2 Developer",
     company: "Self-Directed Autonomous Robotics Projects",
-    location: "Coimbatore, Tamil Nadu, India",
-    duration: "2023 – Present",
+    location: "Chennai , Tamil Nadu, India",
+    duration: " (Feb-2026) – Present",
     type: "Project / Academic",
     description: [
       "Built complete autonomous navigation pipelines using ROS 2 Nav2 with SLAM-based mapping",
@@ -173,7 +217,7 @@ export const certifications = [
 ];
 
 export const stats = [
-  { label: "ROS 2 Projects", value: 2, suffix: "" },
+  { label: "ROS 2 Projects", value: 4, suffix: "" },
   { label: "Wiki Published", value: 1, suffix: "" },
   { label: "Blog Articles", value: 1, suffix: "" },
   { label: "GitHub Repos", value: 5, suffix: "+" },

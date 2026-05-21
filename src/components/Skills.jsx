@@ -63,7 +63,7 @@ export default function Skills() {
           <div>
             <div className="card" style={{ marginBottom: 24 }}>
               <h3 style={{ color: 'var(--accent-amber)', fontWeight: 700, marginBottom: 20, fontSize: '1rem', display: 'flex', alignItems: 'center', gap: 8 }}>
-                🛠️ Tools & Technologies
+                 Tools & Technologies
               </h3>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 {skills.tools.map(t => (

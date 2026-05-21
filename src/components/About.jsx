@@ -2,10 +2,10 @@ import { personalInfo } from '../data/portfolioData';
 
 export default function About() {
   const info = [
-              { label: 'Location', value: 'Coimbatore, TN', icon: '📍' },
+              { label: 'Location', value: 'Coimbatore, Tamil Nadu', icon: '📍' },
               { label: 'Email', value: 'sundaramn353@gmail.com', icon: '📧' },
               { label: 'Phone', value: '+91 7339257336', icon: '📞' },
-              { label: 'Community', value: 'KKR Robotics Manager', icon: '🌐' },
+              { label: 'Community', value: 'ROS Tamilnadu', icon: '🌐' },
               { label: 'Specialization', value: 'ROS 2, SLAM, Nav2', icon: '🤖' },
               { label: 'Open Source', value: 'KKR Robotics Wiki', icon: '📖' },
   ];
@@ -15,7 +15,7 @@ export default function About() {
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: 64 }}>
           <span className="section-tag">About Me</span>
-          <h2 className="section-title">Roboticist. Developer. Community Leader.</h2>
+          <h2 className="section-title">ROS2 Developer & Community Leader.</h2>
           <p className="section-subtitle" style={{ margin: '0 auto' }}>
             Building the future of autonomous robots — one ROS 2 node at a time.
           </p>
@@ -27,7 +27,7 @@ export default function About() {
             <div style={{ marginBottom: 32 }}>
               {[
                 { icon: '🤖', title: 'Robotics Engineer', desc: 'Designing full autonomous robot systems using ROS 2, from URDF modeling to Nav2 navigation and sensor fusion. Specialized in mobile robots and coverage path planning.' },
-                { icon: '🌐', title: 'KKR Robotics Community Manager', desc: 'Founder and manager of the KKR Robotics Community on GitHub — creating open-source troubleshooting resources and knowledge bases for ROS 2 developers in Tamil Nadu.' },
+                { icon: '🌐', title: 'Community Manager', desc: 'Founder and manager of the KKR Robotics Community on GitHub — creating open-source troubleshooting resources and knowledge bases for ROS 2 developers in Tamil Nadu.' },
                 { icon: '📖', title: 'ROS 2 Troubleshooting Wiki Author', desc: 'Created the KKR Robotics Troubleshooting Log wiki — documenting real ROS 2 errors with verified fixes covering Nav2, SLAM, TF2, and hardware integration.' },
                 { icon: '✍️', title: 'Technical Blogger', desc: 'Writing in-depth technical articles on ROS 2, SLAM, navigation, and embedded systems — making complex robotics concepts accessible to all.' },
               ].map(item => (
@@ -59,7 +59,7 @@ export default function About() {
                 Sundaram N
               </h3>
               <p style={{ textAlign: 'center', color: 'var(--accent-cyan)', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', marginBottom: 24 }}>
-                ROS 2 Engineer & KKR Robotics Manager
+                ROS 2 Developer & Community Manage
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 {info.map(i => (

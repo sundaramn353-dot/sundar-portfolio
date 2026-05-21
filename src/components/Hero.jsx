@@ -105,7 +105,7 @@ export default function Hero() {
             <a href="mailto:meenatchisundaram2003@gmail.com" className="btn btn-outline">
               📬 Get In Touch
             </a>
-            <a href="/resume.pdf" target="_blank" rel="noopener" className="btn btn-outline" style={{ borderColor: 'var(--accent-purple)', color: 'var(--accent-purple)' }}>
+            <a href="./resume.pdf" target="_blank" rel="noopener" className="btn btn-outline" style={{ borderColor: 'var(--accent-purple)', color: 'var(--accent-purple)' }}>
               📄 Resume
             </a>
           </div>
