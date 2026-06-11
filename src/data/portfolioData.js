@@ -16,7 +16,7 @@ export const communityWork = [
     id: 1,
     title: "Community Manager — ROS TamilNadu Community",
     description: "Managing the KKR Robotics open-source community on GitHub — creating practical troubleshooting resources, documenting real ROS 2 issues and fixes, and helping developers solve common robotics problems.",
-    icon: "🌐",
+    icon: "globe",
     highlights: [
       "Created and manage the KKR Robotics Community GitHub organization",
       "Authored the ROS 2 Troubleshooting Log wiki for common issues and fixes",
@@ -31,7 +31,7 @@ export const communityWork = [
     id: 2,
     title: "ROS 2 Troubleshooting Wiki",
     description: "Created a detailed Troubleshooting Log wiki documenting real ROS 2 issues encountered during autonomous robot development — covering Nav2, SLAM, TF2, hardware drivers, and Gazebo simulation.",
-    icon: "📖",
+    icon: "book",
     highlights: [
       "Documents real ROS 2 errors with root causes and verified fixes",
       "Covers Nav2, SLAM, TF2 frame errors, and sensor integration",
@@ -47,13 +47,24 @@ export const communityWork = [
 export const blogs = [
   {
     id: 1,
+    title: "TF2 in ROS 2 Explained: Coordinate Frames",
+    summary: "An in-depth guide to TF2 transform trees in ROS 2, explaining parent/child frames, static vs. dynamic coordinate transforms, and hands-on methods for resolving TF frame errors.",
+    date: "08 June 2026",
+    readTime: "6 min read",
+    tags: ["ROS 2", "TF2", "Coordinate Frames", "Robotics"],
+    category: "Tutorial",
+    icon: "code",
+    link: "https://roboticslearninghub.blogspot.com/2026/06/tf2-in-ros2-explained-coordinate-frames.html",
+  },
+  {
+    id: 2,
     title: "ROS 2 Troubleshooting Guide — Common Issues & Fixes",
     summary: "A practical troubleshooting log documenting real ROS 2 errors encountered during autonomous robot development, with verified root causes and fixes for Nav2, SLAM, TF2, and hardware drivers.",
     date: "15 May 2026",
     readTime: "8 min read",
     tags: ["ROS 2", "Nav2", "SLAM", "Troubleshooting"],
     category: "Tutorial",
-    icon: "🛠️",
+    icon: "wiki",
     link: "https://github.com/sundaramn353-dot/KKR-Robotics-Community/wiki",
   },
 ];
@@ -93,6 +104,27 @@ export const skills = {
 export const projects = [
   {
     id: 1,
+    title: "ROS 2 Cafe Butler Robot",
+    subtitle: "Autonomous Service Robot with Order Preemption",
+    description: "An autonomous service robot simulated in Gazebo Harmonic, designed to serve customers in a cafe layout. Implements a robust state machine for ordering and delivery workflows, dynamic cancel/preemption logic, Nav2 stack integration, and custom odometry transformation nodes.",
+    tech: ["ROS 2 Jazzy", "Nav2", "Gazebo Harmonic", "C++", "Python", "State Machine", "URDF"],
+    highlights: [
+      "Custom state machine coordinating tables, order queues, and delivery status",
+      "Dynamic order preemption and cancellation handling during active navigation",
+      "Gazebo Harmonic simulation environment modeled as a realistic cafe layout",
+      "Custom odom_to_tf translation node eliminating transform frame conflicts",
+      "Full autonomous navigation with local costmap obstacle avoidance",
+    ],
+    category: "Robotics",
+    color: "#00f0ff",
+    icon: "robot",
+    github: "https://github.com/sundaramn353-dot/ros2-cafe-butler-robot",
+    media: [
+      { type: "video", src: "media/cafe-butler-demo.mp4", label: "Butler Robot Navigation" },
+    ],
+  },
+  {
+    id: 2,
     title: "ScrubBot — Industrial Floor Cleaning Robot",
     subtitle: "Autonomous Coverage with React Dashboard",
     description: "Full autonomous industrial scrubbing robot with Boustrophedon coverage path planning, real-time React monitoring UI, auto-docking, and obstacle-aware Nav2 navigation.",
@@ -106,14 +138,14 @@ export const projects = [
     ],
     category: "Robotics",
     color: "#00d4ff",
-    icon: "🤖",
+    icon: "robot",
     github: "https://github.com/sundaramn353-dot/Scrub_Bot",
     media: [
       { type: "video", src: "media/scrubbot-demo.webm", label: "ScrubBot Demo" },
     ],
   },
   {
-    id: 2,
+    id: 3,
     title: "Autonomous Vacuum Robot",
     subtitle: "ROS 2 Differential Drive Navigation",
     description: "Complete ROS 2 navigation pipeline with SLAM mapping, AMCL localization, Nav2 path planning, and Gazebo simulation for a differential drive vacuum robot.",
@@ -127,14 +159,14 @@ export const projects = [
     ],
     category: "Robotics",
     color: "#7c3aed",
-    icon: "🔄",
+    icon: "refresh",
     github: "https://github.com/sundaramn353-dot/AMR-Cleaning-Robot",
     media: [
       { type: "video", src: "media/vacuum-robot-demo.mp4", label: "Navigation Demo" },
     ],
   },
   {
-    id: 3,
+    id: 4,
     title: "Automated Metal Detector",
     subtitle: "Real-Time Alert System with Embedded Sensors",
     description: "An automated metal detection system featuring real-time buzzer and LED alerts, with proximity-based sensitivity calibration. Built with embedded microcontrollers for reliable field detection of metallic objects.",
@@ -148,10 +180,10 @@ export const projects = [
     ],
     category: "Embedded",
     color: "#f59e0b",
-    icon: "🔍",
+    icon: "search",
   },
   {
-    id: 4,
+    id: 5,
     title: "Rocker-Bogie Surveillance Robot",
     subtitle: "Hazardous Object Handling & Terrain Traversal",
     description: "A rocker-bogie chassis-based surveillance robot designed for hazardous object detection and handling in uneven terrain. Features a robotic arm for object manipulation and camera-based remote surveillance capabilities.",
@@ -165,7 +197,7 @@ export const projects = [
     ],
     category: "Embedded",
     color: "#10b981",
-    icon: "🛡️",
+    icon: "shield",
     media: [
       { type: "image", src: "media/rocker-bogie-1.jpeg", label: "Robot Overview" },
       { type: "image", src: "media/rocker-bogie-2.jpeg", label: "Terrain Test" },
@@ -217,10 +249,10 @@ export const certifications = [
 ];
 
 export const stats = [
-  { label: "ROS 2 Projects", value: 4, suffix: "" },
+  { label: "ROS 2 Projects", value: 5, suffix: "" },
   { label: "Wiki Published", value: 1, suffix: "" },
-  { label: "Blog Articles", value: 1, suffix: "" },
-  { label: "GitHub Repos", value: 5, suffix: "+" },
+  { label: "Blog Articles", value: 2, suffix: "" },
+  { label: "GitHub Repos", value: 6, suffix: "+" },
 ];
 
 export const navLinks = [
