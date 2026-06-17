@@ -78,7 +78,7 @@ export default function About() {
                 }} />
               </div>
               
-              <h3 style={{ textAlign: 'center', fontSize: '1.4rem', fontWeight: 800, marginBottom: 6, color: 'var(--text-primary)', fontFamily: 'var(--font-display)', letterSpacing: 0.5 }}>
+              <h3 style={{ textAlign: 'center', fontSize: '1.4rem', fontWeight: 800, marginBottom: 6, cologithubr: 'var(--text-primary)', fontFamily: 'var(--font-display)', letterSpacing: 0.5 }}>
                 Meenatchi Sundaram N
               </h3>
               

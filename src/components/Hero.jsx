@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { personalInfo } from '../data/portfolioData';
-
-const ROLES = personalInfo.roles;
+import { GithubIcon, LinkedinIcon, RobotIcon } from './Icons';
 
 // Custom Canvas Component for ROS HUD Simulation
 function RoboticsHUD() {
@@ -24,19 +24,18 @@ function RoboticsHUD() {
 
     // Node network points
     const nodes = [
-      { name: '/odom', x: 0.2, y: 0.3, size: 6, pulse: 0, labelSide: 'top' },
-      { name: '/laser_scan', x: 0.8, y: 0.25, size: 6, pulse: 0, labelSide: 'top' },
-      { name: '/nav2_pose', x: 0.5, y: 0.5, size: 10, pulse: 0, labelSide: 'right', isCenter: true },
-      { name: '/cmd_vel', x: 0.3, y: 0.75, size: 6, pulse: 0, labelSide: 'bottom' },
-      { name: '/tf_tree', x: 0.75, y: 0.7, size: 6, pulse: 0, labelSide: 'bottom' },
+      { name: '/odom', x: 0.15, y: 0.3, size: 5, pulse: 0, labelSide: 'top' },
+      { name: '/laser_scan', x: 0.85, y: 0.25, size: 5, pulse: 0, labelSide: 'top' },
+      { name: '/nav2_pose', x: 0.5, y: 0.5, size: 8, pulse: 0, labelSide: 'right', isCenter: true },
+      { name: '/cmd_vel', x: 0.2, y: 0.75, size: 5, pulse: 0, labelSide: 'bottom' },
+      { name: '/tf_tree', x: 0.8, y: 0.7, size: 5, pulse: 0, labelSide: 'bottom' },
     ];
 
-    // Lidar points simulation
     const lidarPoints = [];
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 40; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const dist = 50 + Math.random() * 120;
-      lidarPoints.push({ angle, dist, intensity: 0.3 + Math.random() * 0.7 });
+      const dist = 60 + Math.random() * 100;
+      lidarPoints.push({ angle, dist, intensity: 0.4 + Math.random() * 0.6 });
     }
 
     let angleSweep = 0;
@@ -47,9 +46,9 @@ function RoboticsHUD() {
       const cy = height / 2;
 
       // Draw Grid System
-      ctx.strokeStyle = 'rgba(0, 240, 255, 0.04)';
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.03)';
       ctx.lineWidth = 1;
-      const gridSize = 40;
+      const gridSize = 50;
       for (let x = 0; x < width; x += gridSize) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
@@ -64,65 +63,42 @@ function RoboticsHUD() {
       }
 
       // Draw concentric radar circles
-      ctx.strokeStyle = 'rgba(0, 240, 255, 0.08)';
-      for (let r = 50; r <= 200; r += 50) {
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.06)';
+      for (let r = 60; r <= 180; r += 60) {
         ctx.beginPath();
         ctx.arc(cx, cy, r, 0, Math.PI * 2);
         ctx.stroke();
       }
 
       // Radar sweep line
-      angleSweep += 0.012;
+      angleSweep += 0.01;
       ctx.beginPath();
       ctx.moveTo(cx, cy);
-      ctx.lineTo(cx + Math.cos(angleSweep) * 220, cy + Math.sin(angleSweep) * 220);
-      ctx.strokeStyle = 'rgba(0, 240, 255, 0.2)';
-      ctx.lineWidth = 2;
+      ctx.lineTo(cx + Math.cos(angleSweep) * 200, cy + Math.sin(angleSweep) * 200);
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.15)';
+      ctx.lineWidth = 1.5;
       ctx.stroke();
-
-      // Radar sweep trail gradient
-      const trail = 40;
-      for (let i = 0; i < trail; i++) {
-        const alpha = (1 - i / trail) * 0.12;
-        const curAngle = angleSweep - i * 0.005;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(cx + Math.cos(curAngle) * 220, cy + Math.sin(curAngle) * 220);
-        ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-      }
 
       // Draw simulated lidar points
       lidarPoints.forEach((p) => {
-        // Find if sweep is close to this point
         const diff = Math.abs((p.angle - angleSweep) % (Math.PI * 2));
         let brightness = 0.15;
-        if (diff < 0.25 || diff > Math.PI * 2 - 0.25) {
-          brightness = 0.95;
+        if (diff < 0.3 || diff > Math.PI * 2 - 0.3) {
+          brightness = 0.85;
         }
 
         const px = cx + Math.cos(p.angle) * p.dist;
         const py = cy + Math.sin(p.angle) * p.dist;
 
         ctx.beginPath();
-        ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+        ctx.arc(px, py, 2, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(0, 240, 255, ${brightness * p.intensity})`;
         ctx.fill();
-        if (brightness > 0.8) {
-          ctx.shadowColor = 'rgba(0, 240, 255, 0.8)';
-          ctx.shadowBlur = 8;
-          ctx.beginPath();
-          ctx.arc(px, py, 4, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(0, 240, 255, 0.3)';
-          ctx.stroke();
-          ctx.shadowBlur = 0; // reset
-        }
       });
 
-      // Draw connection lines between nodes
-      ctx.strokeStyle = 'rgba(157, 78, 221, 0.18)';
-      ctx.lineWidth = 1.5;
+      // Draw connection lines
+      ctx.strokeStyle = 'rgba(157, 78, 221, 0.12)';
+      ctx.lineWidth = 1;
       const centerNode = nodes.find(n => n.isCenter);
       nodes.forEach(node => {
         if (!node.isCenter && centerNode) {
@@ -133,38 +109,29 @@ function RoboticsHUD() {
         }
       });
 
-      // Draw floating nodes & text label
+      // Draw nodes
       nodes.forEach((node) => {
         node.pulse += 0.04;
-        const pulseVal = Math.sin(node.pulse) * 3;
+        const pulseVal = Math.sin(node.pulse) * 2;
         const nx = cx * 2 * node.x;
         const ny = height * node.y;
 
-        // Outer pulse circle
         ctx.beginPath();
-        ctx.arc(nx, ny, node.size + pulseVal + 3, 0, Math.PI * 2);
-        ctx.strokeStyle = node.isCenter ? 'rgba(0, 240, 255, 0.25)' : 'rgba(157, 78, 221, 0.25)';
-        ctx.lineWidth = 1;
+        ctx.arc(nx, ny, node.size + pulseVal + 2, 0, Math.PI * 2);
+        ctx.strokeStyle = node.isCenter ? 'rgba(0, 240, 255, 0.2)' : 'rgba(157, 78, 221, 0.2)';
         ctx.stroke();
 
-        // Node center
         ctx.beginPath();
         ctx.arc(nx, ny, node.size, 0, Math.PI * 2);
-        ctx.fillStyle = node.isCenter ? 'var(--accent-cyan)' : 'var(--accent-purple)';
-        ctx.shadowColor = node.isCenter ? 'rgba(0, 240, 255, 0.8)' : 'rgba(157, 78, 221, 0.8)';
-        ctx.shadowBlur = 10;
+        ctx.fillStyle = node.isCenter ? '#00f0ff' : '#9d4edd';
         ctx.fill();
-        ctx.shadowBlur = 0; // Reset shadow
 
-        // Label details
-        ctx.fillStyle = 'rgba(243, 244, 246, 0.85)';
-        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillStyle = 'rgba(243, 244, 246, 0.7)';
+        ctx.font = '9px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         
-        let lyOffset = 16;
-        if (node.labelSide === 'top') lyOffset = -14;
-        if (node.labelSide === 'bottom') lyOffset = 20;
-
+        let lyOffset = 14;
+        if (node.labelSide === 'top') lyOffset = -12;
         ctx.fillText(node.name, nx, ny + lyOffset);
       });
 
@@ -182,15 +149,7 @@ function RoboticsHUD() {
   return (
     <canvas
       ref={canvasRef}
-      style={{
-        width: '100%',
-        height: '100%',
-        display: 'block',
-        position: 'absolute',
-        inset: 0,
-        zIndex: 0,
-        pointerEvents: 'none',
-      }}
+      className="absolute inset-0 w-full h-full block z-0 pointer-events-none"
     />
   );
 }
@@ -200,11 +159,13 @@ export default function Hero() {
   const [displayed, setDisplayed] = useState('');
   const [typing, setTyping] = useState(true);
 
+  const roles = personalInfo.roles;
+
   useEffect(() => {
-    const role = ROLES[roleIndex];
+    const role = roles[roleIndex];
     if (typing) {
       if (displayed.length < role.length) {
-        const t = setTimeout(() => setDisplayed(role.slice(0, displayed.length + 1)), 60);
+        const t = setTimeout(() => setDisplayed(role.slice(0, displayed.length + 1)), 50);
         return () => clearTimeout(t);
       } else {
         const t = setTimeout(() => setTyping(false), 2000);
@@ -212,172 +173,156 @@ export default function Hero() {
       }
     } else {
       if (displayed.length > 0) {
-        const t = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 35);
+        const t = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 25);
         return () => clearTimeout(t);
       } else {
-        setRoleIndex((roleIndex + 1) % ROLES.length);
+        setRoleIndex((roleIndex + 1) % roles.length);
         setTyping(true);
       }
     }
-  }, [displayed, typing, roleIndex]);
+  }, [displayed, typing, roleIndex, roles]);
 
   return (
-    <section id="home" style={{
-      minHeight: '100vh', display: 'flex', alignItems: 'center',
-      position: 'relative', overflow: 'hidden',
-      background: 'radial-gradient(ellipse at 10% 20%, rgba(0,240,255,0.06) 0%, transparent 60%), radial-gradient(ellipse at 90% 80%, rgba(157,78,221,0.08) 0%, transparent 60%), var(--bg-primary)',
-    }}>
-      {/* HUD Animation Background */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-        <RoboticsHUD />
-      </div>
+    <section id="home" className="min-h-screen flex items-center relative overflow-hidden bg-cyber-bg pt-20">
+      {/* Background HUD Canvas */}
+      <RoboticsHUD />
 
-      {/* Cyber Grid Pattern overlay */}
-      <div style={{
-        position: 'absolute', inset: 0, opacity: 0.02,
-        backgroundImage: 'linear-gradient(rgba(0,240,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,1) 1px, transparent 1px)',
-        backgroundSize: '50px 50px',
-        pointerEvents: 'none',
-        zIndex: 1,
-      }} />
+      {/* Grid overlay */}
+      <div className="absolute inset-0 opacity-[0.015] bg-[linear-gradient(rgba(0,240,255,1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,240,255,1)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-1" />
 
-      <div className="container" style={{ position: 'relative', zIndex: 10, width: '100%' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 48, alignItems: 'center' }} className="grid-2">
+      {/* Radial ambient glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(0,240,255,0.05)_0%,transparent_50%),radial-gradient(circle_at_80%_80%,rgba(157,78,221,0.06)_0%,transparent_50%)] pointer-events-none z-1" />
+
+      <div className="container mx-auto px-6 relative z-10 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Left Block - Hero Pitch */}
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-              <span className="section-tag" style={{ margin: 0 }}>
-                🤖 [ROS 2 NODE STARTED]
+          {/* Left Block - Bio Pitch */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-7 flex flex-col justify-center"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono border border-cyber-blue/30 rounded-full bg-cyber-blue/5 text-cyber-blue shadow-[0_0_10px_rgba(0,240,255,0.15)]">
+                🤖 [ROS 2 CORE INITIALIZED]
               </span>
-              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981', display: 'inline-block', animation: 'pulse-glow 1.5s infinite' }} />
-              <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>SYS_STATUS: ACTIVE</span>
+              <span className="w-2 h-2 rounded-full bg-[#10b981] inline-block animate-pulse shadow-[0_0_8px_#10b981]" />
+              <span className="text-[10px] font-mono text-gray-500">PING: 0.8ms</span>
             </div>
 
-            <h1 style={{
-              fontSize: 'clamp(2.5rem, 6vw, 4.8rem)',
-              fontWeight: 900, lineHeight: 1.1,
-              marginBottom: 16,
-              fontFamily: 'var(--font-display)',
-            }}>
-              <span style={{ color: 'var(--text-primary)' }}>Meenatchi</span><br />
-              <span style={{
-                background: 'linear-gradient(135deg, var(--accent-cyan) 0%, #a855f7 50%, var(--accent-green) 100%)',
-                backgroundSize: '200% 200%',
-                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                animation: 'gradient-shift 6s ease infinite',
-              }}>Sundaram N</span>
+            <h1 className="text-4xl sm:text-6xl font-black tracking-tight mb-4 text-white font-display leading-[1.05]">
+              Meenatchi<br />
+              <span className="bg-gradient-to-r from-cyber-blue via-[#a855f7] to-[#10b981] bg-[size:200%_auto] text-transparent bg-clip-text animate-[gradient-shift_6s_ease_infinite]">
+                Sundaram
+              </span>
             </h1>
 
-            <div style={{
-              fontSize: 'clamp(1rem, 2.2vw, 1.35rem)', fontWeight: 500,
-              color: 'var(--text-secondary)', marginBottom: 28,
-              minHeight: 32, fontFamily: 'var(--font-mono)',
-              display: 'flex', alignItems: 'center', gap: 8,
-            }}>
-              <span style={{ color: 'var(--accent-cyan)' }}>guest@ros2:~$</span>
+            <div className="text-lg sm:text-2xl font-mono text-gray-400 mb-6 flex items-center min-h-[36px]">
+              <span className="text-cyber-blue mr-2">sundar@ros2:~$</span>
               <span>{displayed}</span>
-              <span style={{ width: 2, height: 20, background: 'var(--accent-cyan)', display: 'inline-block', animation: 'pulse-glow 0.8s infinite' }} />
+              <span className="w-1.5 h-6 bg-cyber-blue inline-block animate-pulse ml-1" />
             </div>
 
-            <p style={{
-              fontSize: '1.05rem', color: 'var(--text-secondary)', lineHeight: 1.75,
-              maxWidth: 620, marginBottom: 40,
-            }}>
-              {personalInfo.summary}
+            <p className="text-gray-300 text-base sm:text-lg mb-8 leading-relaxed max-w-xl font-sans">
+              Building autonomous robotic systems using ROS 2, Nav2, SLAM, MoveIt 2, Docker, Linux, and modern robotics software architecture. Specially tuned for production-level reliability and real-time DDS middleware optimizations.
             </p>
 
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-              <a href="#projects" onClick={e => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }); }} className="btn btn-primary">
-                🚀 Explore Projects
+            <div className="flex flex-wrap gap-4">
+              <a 
+                href="#projects" 
+                onClick={e => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }); }} 
+                className="px-6 py-3 font-semibold text-sm rounded bg-gradient-to-r from-cyber-blue to-cyber-purple text-cyber-bg shadow-[0_0_15px_rgba(0,240,255,0.3)] hover:scale-[1.02] hover:shadow-[0_0_25px_rgba(0,240,255,0.5)] transition duration-300"
+              >
+                View Projects
               </a>
-              <a href="#contact" onClick={e => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }} className="btn btn-outline">
-                📬 Contact Me
+              <a 
+                href="resume.pdf" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="px-6 py-3 font-semibold text-sm rounded border border-cyber-purple/40 text-cyber-purple hover:bg-cyber-purple/5 hover:border-cyber-purple transition duration-300"
+              >
+                Download Resume
               </a>
-              <a href="./resume.pdf" target="_blank" rel="noopener" className="btn btn-outline" style={{ borderColor: 'var(--accent-purple)', color: 'var(--accent-purple)' }}>
-                📄 Download Resume
-              </a>
-            </div>
-          </div>
-
-          {/* Right Block - Cyber Dashboard HUD */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }} className="float">
-            <div className="card" style={{
-              background: 'rgba(5, 10, 20, 0.75)',
-              borderColor: 'rgba(0, 240, 255, 0.15)',
-              padding: '24px',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.8rem',
-              color: 'var(--text-secondary)',
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(0, 240, 255, 0.15)', paddingBottom: 10, marginBottom: 12 }}>
-                <span style={{ color: 'var(--accent-cyan)', fontWeight: 'bold' }}>📡 TELEMETRY INTERFACE</span>
-                <span style={{ color: 'var(--accent-amber)' }}>v3.1.2</span>
+              <div className="flex gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+                <a 
+                  href={personalInfo.github} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="p-3 border border-gray-800 text-gray-400 hover:text-cyber-blue hover:border-cyber-blue rounded transition duration-300"
+                  aria-label="GitHub"
+                >
+                  <GithubIcon size={18} />
+                </a>
+                <a 
+                  href={personalInfo.linkedin} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="p-3 border border-gray-800 text-gray-400 hover:text-cyber-blue hover:border-cyber-blue rounded transition duration-300"
+                  aria-label="LinkedIn"
+                >
+                  <LinkedinIcon size={18} />
+                </a>
               </div>
+            </div>
+          </motion.div>
+
+          {/* Right Block - Cyber Profile HUD Frame */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="lg:col-span-5 flex justify-center items-center"
+          >
+            <div className="relative w-72 h-72 sm:w-96 sm:h-96">
               
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>ROS_DISTRO:</span>
-                  <span style={{ color: 'var(--text-primary)' }}>JAZZY ELUSCIOUS</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>LOCALIZATION:</span>
-                  <span style={{ color: 'var(--accent-green)' }}>AMCL [LOCK_OK]</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>SLAM_MAP:</span>
-                  <span style={{ color: 'var(--accent-green)' }}>CARTOGRAPHER</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>LIDAR_STATE:</span>
-                  <span style={{ color: 'var(--text-primary)' }}>SCANNING [5.5 Hz]</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>NAV2_GOAL:</span>
-                  <span style={{ color: 'var(--accent-cyan)' }}>REACHED</span>
-                </div>
+              {/* Spinning outer scanner rings */}
+              <div className="absolute inset-[-15px] border border-dashed border-cyber-blue/20 rounded-full animate-[spin_40s_linear_infinite] pointer-events-none" />
+              <div className="absolute inset-[-5px] border border-cyber-purple/10 rounded-full animate-[spin_20s_linear_infinite_reverse] pointer-events-none" />
+
+              {/* Angle scale ticks */}
+              <div className="absolute inset-0 rounded-full border border-cyber-blue/30 pointer-events-none">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-0.5 h-3 bg-cyber-blue" />
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0.5 h-3 bg-cyber-blue" />
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-3 h-0.5 bg-cyber-blue" />
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-0.5 bg-cyber-blue" />
               </div>
 
-              <div style={{
-                marginTop: 18,
-                padding: '8px 12px',
-                background: 'rgba(0, 240, 255, 0.05)',
-                border: '1px solid rgba(0, 240, 255, 0.1)',
-                borderRadius: 8,
-                fontSize: '0.72rem',
-                lineHeight: 1.5,
-              }}>
-                <span style={{ color: 'var(--accent-cyan)' }}>&gt;_ info_log:</span> custom differential drive model URDF compiled successfully. Nav2 costmaps initialized.
-              </div>
-            </div>
+              {/* Interactive scanning grid */}
+              <div className="absolute inset-3 rounded-full overflow-hidden border border-cyber-blue/30 bg-white shadow-[0_0_40px_rgba(0,240,255,0.1)]">
+                
+                {/* Profile Photo */}
+                <img 
+                  src={`${import.meta.env.BASE_URL}profile.png`}
+                  alt="Meenatchi Sundaram — ROS 2 Robotics Engineer" 
+                  className="w-full h-full object-cover object-top scale-105 hover:scale-110 transition duration-500"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?fit=crop&w=400&h=400";
+                  }}
 
-            {/* Micro Stats Quick view */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-              <div className="card" style={{ padding: '16px 20px', textAlign: 'center', borderColor: 'rgba(157, 78, 221, 0.15)' }}>
-                <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--accent-cyan)', fontFamily: 'var(--font-display)' }}>4</div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.5, marginTop: 4 }}>ROS 2 Projects</div>
+                />
+
+                {/* Vignette to blend white background into dark theme */}
+                <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_bottom,rgba(3,7,18,0.5)_0%,transparent_65%)] pointer-events-none" />
+
+                {/* Scanline overlay — subtle tech feel */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.08)_50%)] bg-[size:100%_4px] pointer-events-none opacity-30" />
               </div>
-              <div className="card" style={{ padding: '16px 20px', textAlign: 'center', borderColor: 'rgba(16, 185, 129, 0.15)' }}>
-                <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--accent-purple)', fontFamily: 'var(--font-display)' }}>5+</div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 0.5, marginTop: 4 }}>Git Repositories</div>
+
+              {/* Floating diagnostic overlay boxes */}
+              <div className="absolute -top-4 -right-4 bg-cyber-card/90 border border-cyber-blue/30 px-3 py-1.5 rounded font-mono text-[9px] text-cyber-blue shadow-lg">
+                <span className="block text-gray-500">TF_LINK</span>
+                <span>/base_link ➔ /odom</span>
+              </div>
+
+              <div className="absolute -bottom-2 -left-4 bg-cyber-card/90 border border-cyber-purple/30 px-3 py-1.5 rounded font-mono text-[9px] text-cyber-purple shadow-lg">
+                <span className="block text-gray-500">ESTIMATOR</span>
+                <span>EKF: LOCK [100Hz]</span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div style={{
-        position: 'absolute', bottom: 30, left: '50%', transform: 'translateX(-50%)',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
-        animation: 'float 2.5s ease-in-out infinite',
-        zIndex: 10,
-      }}>
-        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: 1.5, fontFamily: 'var(--font-mono)' }}>SCROLL</span>
-        <div style={{ width: 20, height: 32, border: '1.5px solid rgba(0,240,255,0.25)', borderRadius: 10, display: 'flex', justifyContent: 'center', paddingTop: 4 }}>
-          <div style={{ width: 3, height: 6, background: 'var(--accent-cyan)', borderRadius: 1.5, animation: 'float 1.5s ease-in-out infinite' }} />
         </div>
       </div>
     </section>
