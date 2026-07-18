@@ -29,7 +29,7 @@ export default function Navbar() {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 font-sans ${
       scrolled 
-        ? 'py-3.5 bg-cyber-bg/80 border-b border-cyber-border/40 backdrop-blur-md shadow-[0_10px_30px_-10px_rgba(0,240,255,0.08)]' 
+        ? 'py-3.5 bg-cyber-bg/90 border-b border-cyber-border/30 backdrop-blur-xl shadow-[0_8px_40px_-10px_rgba(0,229,255,0.1)]' 
         : 'py-5 bg-transparent border-b border-transparent'
     }`}>
       <div className="container mx-auto px-6 flex items-center justify-between">
